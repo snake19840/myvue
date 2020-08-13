@@ -1,0 +1,449 @@
+Index: vue-admin-template/src/views/myviews/HelloWorld.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- vue-admin-template/src/views/myviews/HelloWorld.vue	(date 1597239341340)
++++ vue-admin-template/src/views/myviews/HelloWorld.vue	(date 1597239341340)
+@@ -0,0 +1,113 @@
++<template>
++  <div class="hello">
++    <h1>{{ msg }}</h1>
++    <h2>Essential Links</h2>
++    <ul>
++      <li>
++        <a
++          href="https://vuejs.org"
++          target="_blank"
++        >
++          Core Docs
++        </a>
++      </li>
++      <li>
++        <a
++          href="https://forum.vuejs.org"
++          target="_blank"
++        >
++          Forum
++        </a>
++      </li>
++      <li>
++        <a
++          href="https://chat.vuejs.org"
++          target="_blank"
++        >
++          Community Chat
++        </a>
++      </li>
++      <li>
++        <a
++          href="https://twitter.com/vuejs"
++          target="_blank"
++        >
++          Twitter
++        </a>
++      </li>
++      <br>
++      <li>
++        <a
++          href="http://vuejs-templates.github.io/webpack/"
++          target="_blank"
++        >
++          Docs for This Template
++        </a>
++      </li>
++    </ul>
++    <h2>Ecosystem</h2>
++    <ul>
++      <li>
++        <a
++          href="http://router.vuejs.org/"
++          target="_blank"
++        >
++          vue-router
++        </a>
++      </li>
++      <li>
++        <a
++          href="http://vuex.vuejs.org/"
++          target="_blank"
++        >
++          vuex
++        </a>
++      </li>
++      <li>
++        <a
++          href="http://vue-loader.vuejs.org/"
++          target="_blank"
++        >
++          vue-loader
++        </a>
++      </li>
++      <li>
++        <a
++          href="https://github.com/vuejs/awesome-vue"
++          target="_blank"
++        >
++          awesome-vue
++        </a>
++      </li>
++    </ul>
++  </div>
++</template>
++
++<script>
++export default {
++  name: 'HelloWorld',
++  data () {
++    return {
++      msg: 'Welcome to Your Vue.js App'
++    }
++  }
++}
++</script>
++
++<!-- Add "scoped" attribute to limit CSS to this component only -->
++<style scoped>
++h1, h2 {
++  font-weight: normal;
++}
++ul {
++  list-style-type: none;
++  padding: 0;
++}
++li {
++  display: inline-block;
++  margin: 0 10px;
++}
++a {
++  color: #42b983;
++}
++</style>
+Index: vue-admin-template/src/views/myviews/getTest.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- vue-admin-template/src/views/myviews/getTest.vue	(date 1597239341344)
++++ vue-admin-template/src/views/myviews/getTest.vue	(date 1597239341344)
+@@ -0,0 +1,45 @@
++<template>
++  <div>
++
++      <input type="text" v-model="message" placeholder="请输入">
++      <button @click="up()">提交</button>
++    <hr>
++    <p>消息是: {{ message }}</p>
++
++  </div>
++</template>
++
++<script>
++    export default {
++        name: "getTest",
++        data(){
++          return {
++              message:'',
++            }
++        },
++        methods:{
++            up(){
++
++                this.axios.get('search', {
++                    params: {
++                        p: this.message,
++                    }
++                })
++                    .then( (response)=> {
++                        console.log(response.data);
++                        this.message=response.data;
++                    })
++                    .catch( (error) =>{
++                        console.log(error);
++                    })
++                    .then(function () {
++                    });
++
++            },
++        }
++    }
++</script>
++
++<style scoped>
++
++</style>
+Index: vue-admin-template/src/router/index.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- vue-admin-template/src/router/index.js	(revision 785f19f551c6255defbf8a126c4b0bb4ecb4ae43)
++++ vue-admin-template/src/router/index.js	(date 1597239341324)
+@@ -164,6 +164,8 @@
+   { path: '*', redirect: '/404', hidden: true }
+ ]
+ 
++
++
+ const createRouter = () => new Router({
+   // mode: 'history', // require service support
+   scrollBehavior: () => ({ y: 0 }),
+Index: vue-element-admin/src/router/index.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- vue-element-admin/src/router/index.js	(revision 5e7113935cf9b0ba69867ae569cccda95b687118)
++++ vue-element-admin/src/router/index.js	(date 1597238020733)
+@@ -1,10 +1,9 @@
+ import Vue from 'vue'
+ import Router from 'vue-router'
+ 
+-Vue.use(Router)
+-
+ /* Layout */
+ import Layout from '@/layout'
++import getTest from '@/views/myviews/getTest'
+ 
+ /* Router Modules */
+ import componentsRouter from './modules/components'
+@@ -38,6 +37,8 @@
+  * a base page that does not have permission requirements
+  * all roles can be accessed
+  */
++Vue.use(Router)
++
+ export const constantRoutes = [
+   {
+     path: '/redirect',
+@@ -56,10 +57,11 @@
+     hidden: true
+   },
+   {
+-    path: '/auth-redirect',
+-    component: () => import('@/views/login/auth-redirect'),
++    path: '/login',
++    component: () => import('@/views/login/index'),
+     hidden: true
+   },
++
+   {
+     path: '/404',
+     component: () => import('@/views/error-page/404'),
+@@ -382,9 +384,18 @@
+       }
+     ]
+   },
+-
++  {
++    path: '/HelloWorld',
++    component: () => import('@/views/myviews/HelloWorld'),
++  },
++  {
++    path: '/getTest',
++    component: () => import('@/views/myviews/getTest'),
++    // component:getTest,
++  },
+   // 404 page must be placed at the end !!!
+-  { path: '*', redirect: '/404', hidden: true }
++  { path: '*', redirect: '/404', hidden: true },
++
+ ]
+ 
+ const createRouter = () => new Router({
+Index: vue-element-admin/src/views/myviews/HelloWorld.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- vue-element-admin/src/views/myviews/HelloWorld.vue	(date 1597158839375)
++++ vue-element-admin/src/views/myviews/HelloWorld.vue	(date 1597158839375)
+@@ -0,0 +1,113 @@
++<template>
++  <div class="hello">
++    <h1>{{ msg }}</h1>
++    <h2>Essential Links</h2>
++    <ul>
++      <li>
++        <a
++          href="https://vuejs.org"
++          target="_blank"
++        >
++          Core Docs
++        </a>
++      </li>
++      <li>
++        <a
++          href="https://forum.vuejs.org"
++          target="_blank"
++        >
++          Forum
++        </a>
++      </li>
++      <li>
++        <a
++          href="https://chat.vuejs.org"
++          target="_blank"
++        >
++          Community Chat
++        </a>
++      </li>
++      <li>
++        <a
++          href="https://twitter.com/vuejs"
++          target="_blank"
++        >
++          Twitter
++        </a>
++      </li>
++      <br>
++      <li>
++        <a
++          href="http://vuejs-templates.github.io/webpack/"
++          target="_blank"
++        >
++          Docs for This Template
++        </a>
++      </li>
++    </ul>
++    <h2>Ecosystem</h2>
++    <ul>
++      <li>
++        <a
++          href="http://router.vuejs.org/"
++          target="_blank"
++        >
++          vue-router
++        </a>
++      </li>
++      <li>
++        <a
++          href="http://vuex.vuejs.org/"
++          target="_blank"
++        >
++          vuex
++        </a>
++      </li>
++      <li>
++        <a
++          href="http://vue-loader.vuejs.org/"
++          target="_blank"
++        >
++          vue-loader
++        </a>
++      </li>
++      <li>
++        <a
++          href="https://github.com/vuejs/awesome-vue"
++          target="_blank"
++        >
++          awesome-vue
++        </a>
++      </li>
++    </ul>
++  </div>
++</template>
++
++<script>
++export default {
++  name: 'HelloWorld',
++  data () {
++    return {
++      msg: 'Welcome to Your Vue.js App'
++    }
++  }
++}
++</script>
++
++<!-- Add "scoped" attribute to limit CSS to this component only -->
++<style scoped>
++h1, h2 {
++  font-weight: normal;
++}
++ul {
++  list-style-type: none;
++  padding: 0;
++}
++li {
++  display: inline-block;
++  margin: 0 10px;
++}
++a {
++  color: #42b983;
++}
++</style>
+Index: vue-element-admin/src/views/myviews/gettest.vue
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- vue-element-admin/src/views/myviews/gettest.vue	(date 1597237775369)
++++ vue-element-admin/src/views/myviews/gettest.vue	(date 1597237775369)
+@@ -0,0 +1,60 @@
++<template>
++  <div>
++
++      <input type="text" v-model="message" placeholder="请输入">
++      <button @click="up()">提交</button>
++    <hr>
++    <p>消息是: {{ message }}</p>
++
++
++
++  <hr>
++
++    <el-tabs v-model="activeTab">
++      <el-tab-pane label="简介及公告" name="announcement">
++        <announcement /> </el-tab-pane>
++      <el-tab-pane label="资讯" name="information">
++        <keep-alive> <information v-if="activeTab=='information'" />
++        </keep-alive> </el-tab-pane> <el-tab-pane label="直播流配置" name="stream">
++      <keep-alive> <stream v-if="activeTab=='stream'" />
++      </keep-alive> </el-tab-pane>
++    </el-tabs>
++
++  </div>
++</template>
++
++<script>
++    export default {
++        name: "getTest",
++        data(){
++          return {
++              message:'',
++              activeTab:'announcement',
++            }
++        },
++        methods:{
++            up(){
++
++                this.axios.get('search', {
++                    params: {
++                        p: this.message,
++                    }
++                })
++                    .then( (response)=> {
++                        console.log(response.data);
++                        this.message=response.data;
++                    })
++                    .catch( (error) =>{
++                        console.log(error);
++                    })
++                    .then(function () {
++                    });
++
++            },
++        }
++    }
++</script>
++
++<style scoped>
++
++</style>
+diff --git vue-admin-template/cnpm vue-admin-template/cnpm
+new file mode 100644
+index 0000000000000000000000000000000000000000..e69de29bb2d1d6434b8b29ae775ad8c2e48c5391
+GIT binary patch
+literal 0
+Hc$@<O00001
+
