@@ -79,18 +79,41 @@
           awesome-vue
         </a>
       </li>
-    </ul>
+    </ul >
+
+    <el-input style="width: 200px" v-model="input" placeholder="请输入内容"></el-input>
+    <el-row>
+      <el-button @click="link()">默认按钮</el-button>
+      <el-button size="medium">中等按钮</el-button>
+      <el-button size="small">小型按钮</el-button>
+      <el-button size="mini">超小按钮</el-button>
+    </el-row >
+
   </div>
 </template>
 
 <script>
+import * as router from "vue-router";
+
 export default {
   name: 'HelloWorld',
   data () {
     return {
+        input:'',
       msg: 'Welcome to Your Vue.js App'
     }
-  }
+  },
+  methods:{
+      link(){
+              this.$router.push({
+                  // path:'/getTest',
+                  name:'getTest',
+                  params: {
+                      id:this.input
+                  }
+              })
+      },
+  },
 }
 </script>
 

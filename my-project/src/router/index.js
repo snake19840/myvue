@@ -7,15 +7,25 @@ Vue.use(Router)
 
 export default new Router({
   routes: [
+    // {
+    //   path: '/',
+    //   name: 'HelloWorld',
+    //   component: HelloWorld
+    // },
+    // {
+    //   path: '/getTest',
+    //   name: 'getTest',
+    //   component: getTest
+    // },
     {
-      path: '/',
+      path:'/',
       name: 'HelloWorld',
-      component: HelloWorld
+      component:()=>import('@/views/myviews/HelloWorld.vue'),
     },
     {
-      path: '/getTest',
+      path:'/getTest',
       name: 'getTest',
-      component: getTest
+      component:()=>import('@/views/myviews/getTest.vue'),
     },
 
 

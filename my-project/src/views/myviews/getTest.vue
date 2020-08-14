@@ -14,13 +14,14 @@
         name: "getTest",
         data(){
           return {
-              message:'',
+              message:this.$route.params.id,
+
             }
         },
         methods:{
             up(){
 
-                this.axios.get('search', {
+                this.axios.get('/search', {
                     params: {
                         p: this.message,
                     }
@@ -36,7 +37,14 @@
                     });
 
             },
-        }
+        },
+        computed:{
+            // message(){
+            //   // return   this.$route.params.id
+            //     return 1+3
+            // },
+
+        },
     }
 </script>
 
